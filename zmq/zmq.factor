@@ -81,6 +81,12 @@ M: zmq-socket dispose
               [ zmq-msg-data ] [ zmq-msg-size ] bi memory>byte-array
   ] with-disposal ;
 
+: zmq-setsockopt ( socket name value length -- )
+  [ underlying>> ] 3dip zmq_setsockopt check-zmq-error ;
+
+: zmq-setsockopt-subscribe ( socket filter -- )
+    ZMQ_SUBSCRIBE swap >byte-array dup length zmq-setsockopt ;
+
 ! : zmq-poll ( items nitems timeout -- n )
 !     zmq_poll dup < 0 [ throw-zmq-error ] when ;
 
