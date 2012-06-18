@@ -9,7 +9,7 @@ IN: zmq.examples.wuclient
         ZMQ_SUB <zmq-socket> [
             dup "tcp://localhost:5556" zmq-connect
             command-line get dup empty? [ drop "10001 " ] [ first ] if
-            2dup zmq-setsockopt-subscribe
+            2dup >byte-array ZMQ_SUBSCRIBE swap zmq-setsockopt
             0 100 dup [
                 [ pick 0 zmq-recv-byte-array
                   >string " " split [ string>number ] map second +

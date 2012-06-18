@@ -61,6 +61,16 @@ TUPLE: zmq-socket underlying ;
 M: zmq-socket dispose
     underlying>> zmq_close check-zmq-error ;
 
+: zmq-setsockopt ( socket name value -- )
+    [ underlying>> ] 2dip
+    over {
+        { ZMQ_SUBSCRIBE [ dup length ] }
+        { ZMQ_UNSUBSCRIBE [ dup length ] }
+        { ZMQ_RCVTIMEO [ 4 ] }
+        { ZMQ_SNDTIMEO [ 4 ] }
+    } case
+    zmq_setsockopt check-zmq-error ;
+
 : zmq-bind ( socket addr -- )
     [ underlying>> ] dip zmq_bind check-zmq-error ;
 
@@ -80,12 +90,6 @@ M: zmq-socket dispose
   <zmq-msg> [ dup -rot [ zmq-recv ] dip
               [ zmq-msg-data ] [ zmq-msg-size ] bi memory>byte-array
   ] with-disposal ;
-
-: zmq-setsockopt ( socket name value length -- )
-  [ underlying>> ] 3dip zmq_setsockopt check-zmq-error ;
-
-: zmq-setsockopt-subscribe ( socket filter -- )
-    ZMQ_SUBSCRIBE swap >byte-array dup length zmq-setsockopt ;
 
 ! : zmq-poll ( items nitems timeout -- n )
 !     zmq_poll dup < 0 [ throw-zmq-error ] when ;
