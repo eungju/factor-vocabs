@@ -14,8 +14,8 @@ IN: zmq.examples.hwclient
                 [ [ dup 0 zmq-recv-byte-array >string ] dip
                   "Received %s %d\n" printf flush ]
                 bi
-            ] each
-        ] with-disposal drop
+            ] each drop
+        ] with-disposal
     ] with-zmq-context ;
     
 MAIN: hwclient

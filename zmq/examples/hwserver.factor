@@ -13,8 +13,8 @@ IN: zmq.examples.hwserver
                 [ drop 1 seconds sleep ]
                 [ "World" >byte-array 0 zmq-send-byte-array ]
                 tri
-            ] while
-        ] with-disposal drop
+            ] while drop
+        ] with-disposal
     ] with-zmq-context ;
 
 MAIN: hwserver
