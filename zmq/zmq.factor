@@ -6,10 +6,10 @@ IN: zmq
 ERROR: zmq-error n string ;
 
 : throw-zmq-error ( -- )
-    zmq_errno dup zmq_strerror zmq-error ;
+    zmq_errno dup zmq_strerror zmq-error ; inline
 
 : check-zmq-error ( retval -- )
-    0 = [ throw-zmq-error ] unless ;
+    0 = [ throw-zmq-error ] unless ; inline
 
 
 : zmq-version ( -- major minor patch )
